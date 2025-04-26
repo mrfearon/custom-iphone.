@@ -1,183 +1,52 @@
-body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-  background: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=390&h=844&q=100') no-repeat center center;
-  background-size: cover;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  color: white;
-  position: relative;
-  margin: 0;
-}
+const episodes = Array.from({ length: 9 }, (_, i) => i + 1); // Episodes 1-9
+const amounts = Array.from({ length: episodes.length }, (_, i) => 34 + i * (33 / (episodes.length - 1))); // $34 to $67, incremental
+let currentEpisodeIndex = 0;
+const notificationSound = document.getElementById('notificationSound');
+const maxNotifications = 2; // Maximum number of notifications to display at once
 
-.status-bar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  padding: 20px 15px 5px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: transparent;
-}
+function createNotification() {
+  const container = document.getElementById('notificationContainer');
+  const notification = document.createElement('div');
+  notification.className = 'notification';
 
-.status-left, .status-right {
-  display: flex;
-  align-items: center;
-  font-size: 12px;
-}
+  const episode = episodes[currentEpisodeIndex];
+  const amount = amounts[currentEpisodeIndex].toFixed(2);
 
-.status-right img {
-  margin: 0 3px;
-}
+  notification.innerHTML = `
+    <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Netflix Logo">
+    <div class="notification-text">
+      <p>Netflix</p>
+      <p>We just added $${amount} to your balance for completing The Vampire Diaries Episode ${episode}</p>
+      <span>Just now</span>
+    </div>
+  `;
 
-.five-g-icon {
-  width: 26px;
-  height: 16px;
-}
+  // Add the new notification to the top
+  container.prepend(notification);
 
-.battery-icon {
-  width: 34px;
-  height: 18px;
-}
+  // Play the notification sound
+  notificationSound.currentTime = 0; // Reset to start
+  notificationSound.play();
 
-.date-time-container {
-  position: absolute;
-  top: 13%;
-  width: 100%;
-  text-align: center;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-}
-
-.date {
-  font-size: 22px;
-  font-weight: 500;
-  margin-bottom: 5px;
-}
-
-.time {
-  font-size: 84px;
-  font-weight: 400;
-  line-height: 1;
-}
-
-.notification-container {
-  position: absolute;
-  top: 30%;
-  width: 90%;
-  max-width: 350px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.notification {
-  background: rgba(0, 0, 0, 0.75);
-  color: white;
-  padding: 12px 16px;
-  margin-bottom: 12px;
-  border-radius: 16px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-  display: flex;
-  align-items: center;
-  width: 100%;
-  opacity: 0;
-  transform: translateY(-20px);
-  animation: slideIn 0.5s forwards;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-}
-
-.notification img {
-  width: 30px;
-  height: 30px;
-  margin-right: 14px;
-  border-radius: 6px;
-}
-
-.notification-text {
-  flex: 1;
-}
-
-.notification-text p {
-  margin: 0;
-  font-size: 15px;
-  font-weight: 500;
-  line-height: 1.3;
-}
-
-.notification-text p:first-child {
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.notification-text span {
-  font-size: 13px;
-  color: #ccc;
-}
-
-.bottom-section {
-  position: absolute;
-  bottom: 40px;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 30px;
-}
-
-.icon {
-  width: 45px;
-  height: 45px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-}
-
-.flashlight-icon img, .camera-icon img {
-  width: 32px;
-  height: 32px;
-}
-
-.swipe-container {
-  position: absolute;
-  bottom: 10px;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-}
-
-.swipe-text {
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.swipe-bar {
-  width: 100px;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 2px;
-}
-
-@keyframes slideIn {
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  // If there are more than maxNotifications, remove the bottom (oldest) one
+  const notifications = container.children;
+  if (notifications.length > maxNotifications) {
+    const bottomNotification = notifications[notifications.length - 1];
+    bottomNotification.style.animation = 'slideOut 0.5s forwards';
+    setTimeout(() => {
+      container.removeChild(bottomNotification);
+    }, 500);
   }
+
+  // Move to the next episode, loop back to 0 if at the end
+  currentEpisodeIndex = (currentEpisodeIndex + 1) % episodes.length;
 }
 
-@keyframes slideOut {
-  to {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
+// Create notifications at intervals
+function startNotifications() {
+  createNotification();
+  setInterval(createNotification, 2000); // New notification every 2 seconds
 }
+
+// Start when page loads
+window.onload = startNotifications;
