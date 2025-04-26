@@ -1,18 +1,18 @@
 body {
   margin: 0;
   padding: 0;
-  width: 390px;
-  height: 844px;
+  width: 100%;
+  height: 100vh;
   overflow: hidden;
   background: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=390&h=844&q=100') no-repeat center center;
-  background-size: contain;
+  background-size: cover;
   display: flex;
   flex-direction: column;
   align-items: center;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   color: white;
   position: relative;
-  margin: 0 auto;
+  margin: 0;
 }
 
 .status-bar {
@@ -33,36 +33,35 @@ body {
   font-size: 12px;
 }
 
-.status-left img, .status-right img {
-  margin: 0 4px;
-}
-
-.signal-icon {
-  width: 22px;
-  height: 14px;
-}
-
-.wifi-icon {
-  width: 22px;
-  height: 14px;
+.status-right img {
+  margin: 0 3px;
 }
 
 .five-g-icon {
-  width: 24px;
-  height: 14px;
+  width: 26px;
+  height: 16px;
 }
 
 .battery-icon {
-  width: 28px;
-  height: 14px;
+  width: 34px;
+  height: 18px;
 }
 
 .date-time-container {
   position: absolute;
-  top: 13%;
+  top: 10%;
   width: 100%;
   text-align: center;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lock-icon {
+  width: 30px;
+  height: 30px;
+  margin-bottom: 10px;
 }
 
 .date {
@@ -73,7 +72,7 @@ body {
 
 .time {
   font-size: 84px;
-  font-weight: 200;
+  font-weight: 400;
   line-height: 1;
 }
 
@@ -99,7 +98,7 @@ body {
   width: 100%;
   opacity: 0;
   transform: translateY(-20px);
-  animation: slideIn 0.5s forwards, slideOut 0.5s 4s forwards;
+  animation: slideIn 0.5s forwards;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
 }
@@ -143,20 +142,17 @@ body {
 }
 
 .icon {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
   width: 45px;
   height: 45px;
   display: flex;
   justify-content: center;
   align-items: center;
-  backdrop-filter: blur(5px);
   position: relative;
 }
 
 .flashlight-icon img, .camera-icon img {
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
 }
 
 .swipe-container {
