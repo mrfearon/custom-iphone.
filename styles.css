@@ -49,19 +49,13 @@ body {
 
 .date-time-container {
   position: absolute;
-  top: 10%;
+  top: 13%;
   width: 100%;
   text-align: center;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.lock-icon {
-  width: 30px;
-  height: 30px;
-  margin-bottom: 10px;
 }
 
 .date {
